@@ -3,6 +3,7 @@ import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 
 import User from '../models/User';
+import AppError from '../errors/AppError';
 import authConfig from '../config/auth';
 
 interface Request {
@@ -44,8 +45,8 @@ class AuthenticateUserService {
     };
   }
 
-  private generateError(): Error {
-    return new Error('Incorrect email/password combination.');
+  private generateError(): AppError {
+    return new AppError('Incorrect email/password combination.', 401);
   }
 }
 
