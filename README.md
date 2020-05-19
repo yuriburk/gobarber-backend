@@ -1,4 +1,10 @@
-# Recuperação de senha
+# GoBarber Backend 🤓
+
+GoBarber is an application created in Rocketseat's GoStack Bootcamp, it is developed in Node.js using Typescript and others cool technologies, such like: Jest, TypeORM, TSyringe and much more!
+
+## Let's check our app requirements:
+
+### Recuperação de senha
 
 **RF**
 
@@ -17,7 +23,7 @@
 - O link enviado por e-mail para resetar senha deve expirar em 2h;
 - O usuário precisa confirmar a nova senha ao resetar sua senha;
 
-# Atualização do perfil
+### Atualização do perfil
 
 **RF**
 
@@ -29,7 +35,7 @@
 - Para atualizar sua senha, o usuário deve informar a senha antiga;
 - Para atualizar sua senha, o usuário precisa confirmar a nova senha;
 
-# Painel do prestador
+### Painel do prestador
 
 **RF**
 
@@ -47,7 +53,7 @@
 
 - A notificação deve ter um status de lida ou não lida para que o prestador possa controlar;
 
-# Agendamento de serviços
+### Agendamento de serviços
 
 **RF**
 
