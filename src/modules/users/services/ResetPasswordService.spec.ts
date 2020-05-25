@@ -1,3 +1,4 @@
+import AppError from '@shared/errors/AppError';
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import ResetPasswordService from './ResetPasswordService';
 import FakeUserTokensRepository from '../repositories/fakes/FakeUserTokensRepository';
@@ -8,7 +9,7 @@ let fakeUserTokensRepository: FakeUserTokensRepository;
 let resetPassword: ResetPasswordService;
 let fakeHashProvider: FakeHashProvider;
 
-describe('SendForgotPasswordEmail', () => {
+describe('ResetPassword', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeUserTokensRepository = new FakeUserTokensRepository();
@@ -21,7 +22,7 @@ describe('SendForgotPasswordEmail', () => {
     );
   });
 
-  it('should be able to reset the pasword', async () => {
+  it('should be able to reset the password', async () => {
     const user = await fakeUsersRepository.create({
       name: 'John Doe',
       email: 'johndoe@example.com',
@@ -41,5 +42,49 @@ describe('SendForgotPasswordEmail', () => {
 
     expect(generateHash).toHaveBeenCalledWith('12345');
     expect(updatedUser?.password).toBe('12345');
+  });
+
+  it('should not be able to reset the password with non-existing token', async () => {
+    await expect(
+      resetPassword.execute({
+        token: 'non-existing-token',
+        password: '1234',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able to reset the password with non-existing user', async () => {
+    const { token } = await fakeUserTokensRepository.generate(
+      'non-existing-user',
+    );
+
+    await expect(
+      resetPassword.execute({
+        token,
+        password: '1234',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able to reset the password if passed more than 2 hours', async () => {
+    const user = await fakeUsersRepository.create({
+      name: 'John Doe',
+      email: 'johndoe@example.com',
+      password: '1234',
+    });
+
+    const { token } = await fakeUserTokensRepository.generate(user.id);
+
+    jest.spyOn(Date, 'now').mockImplementationOnce(() => {
+      const customDate = new Date();
+      return customDate.setHours(customDate.getHours() + 4);
+    });
+
+    await expect(
+      resetPassword.execute({
+        token,
+        password: '12345',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
 });
