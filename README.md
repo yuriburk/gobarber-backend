@@ -14,7 +14,7 @@ GoBarber is an application created in Rocketseat's GoStack Bootcamp, it is devel
 
 **RNF**
 
-- Utilizar <a href="https://mailtrap.io">Mailtrap</a> para testar envios em ambiente de dev;
+- Utilizar <a href="https://mailtrap.io">Mailtrap</a> ou <a href="https://ethereal.mail">Ethereal</a> para testar envios em ambiente de dev;
 - Utilizar Amazon SES para envios em produção;
 - O envio de e-mails deve acontecer em segundo plano (background job);
 
