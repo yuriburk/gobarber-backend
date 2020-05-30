@@ -1,4 +1,4 @@
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, Repository, Not } from 'typeorm';
 
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
@@ -25,6 +25,14 @@ class UsersRepository implements IUsersRepository {
     });
 
     return userFound;
+  }
+
+  public async isEmailInUse(user_id: string, email: string): Promise<boolean> {
+    return (
+      (await this.ormRepository.findOne({
+        where: { id: Not(user_id), email },
+      })) !== undefined
+    );
   }
 
   public async create(data: ICreateUserDTO): Promise<User> {
