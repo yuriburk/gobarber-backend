@@ -18,6 +18,7 @@ describe('ListProviderMonthAvailability', () => {
       promises.push(
         fakeAppointmentsRepository.create({
           provider_id: 'provider-id',
+          user_id: 'user-id',
           date: new Date(2020, 4, 21, i, 0, 0),
         }),
       );
