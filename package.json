@@ -8,11 +8,12 @@
     "dev:server": "ts-node-dev -r tsconfig-paths/register --inspect --transpileOnly --ignore-watch node_modules src/shared/infra/http/server.ts",
     "start": "ts-node src/shared/infra/http/index.ts",
     "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
-    "test": "jest",
-    "test-clean": "jest --no-cache"
+    "test": "jest --setupFiles dotenv/config",
+    "test-clean": "jest --setupFiles dotenv/config --no-cache"
   },
   "dependencies": {
     "@types/nodemailer": "^6.4.0",
+    "aws-sdk": "^2.692.0",
     "bcryptjs": "^2.4.3",
     "celebrate": "^12.1.1",
     "class-transformer": "^0.2.3",

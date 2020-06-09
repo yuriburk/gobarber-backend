@@ -1,5 +1,5 @@
-import { sign } from 'jsonwebtoken';
 import { injectable, inject } from 'tsyringe';
+import { sign } from 'jsonwebtoken';
 
 import User from '../infra/typeorm/entities/User';
 import AppError from '../../../shared/errors/AppError';
