@@ -1,4 +1,5 @@
 import { injectable, inject } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import User from '@modules/users/infra/typeorm/entities/User';
@@ -20,12 +21,16 @@ class ListProvidersService {
 
   public async execute({ user_id }: IRequest): Promise<User[]> {
     const cacheKey = `providers-list:${user_id}`;
-    let users = await this.cacheProvider.recover<User[]>(cacheKey);
+    let users = classToClass(
+      await this.cacheProvider.recover<User[]>(cacheKey),
+    );
 
     if (!users) {
-      users = await this.usersRepository.findAllProviders({
-        user_id,
-      });
+      users = classToClass(
+        await this.usersRepository.findAllProviders({
+          user_id,
+        }),
+      );
 
       await this.cacheProvider.save(cacheKey, users);
     }
