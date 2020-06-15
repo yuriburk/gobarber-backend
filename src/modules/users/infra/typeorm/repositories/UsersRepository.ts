@@ -29,12 +29,12 @@ class UsersRepository implements IUsersRepository {
   }
 
   public async findAllProviders({
-    except_user_id,
+    user_id,
   }: IFindAllProvidersDTO): Promise<User[]> {
-    if (except_user_id) {
+    if (user_id) {
       return this.ormRepository.find({
         where: {
-          id: Not(except_user_id),
+          id: Not(user_id),
         },
       });
     }
