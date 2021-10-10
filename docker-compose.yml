@@ -5,6 +5,8 @@ services:
     container_name: 'mongo_gobarber'
     ports:
       - '27017:27017'
+    networks:
+      - 'gobarber'
   postgre:
     image: postgres
     container_name: 'postgre_gobarber'
@@ -12,8 +14,40 @@ services:
       - POSTGRES_PASSWORD=docker
     ports:
       - '5432:5432'
+    networks:
+      - 'gobarber'
   redis:
     image: 'redis:alpine'
     container_name: 'redis_gobarber'
     ports:
       - '6379:6379'
+    networks:
+      - 'gobarber'
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.development
+    container_name: 'gobarber_backend'
+    ports:
+      - '5000:5000'
+    env_file:
+      - './.env'
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - mongo
+      - redis
+    links:
+      - 'mongo'
+      - 'redis'
+    networks:
+      - 'gobarber'
+
+volumes:
+  mongo:
+  redis-data:
+
+networks:
+  gobarber:
+    driver: bridge
